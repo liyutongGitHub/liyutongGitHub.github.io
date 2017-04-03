@@ -152,17 +152,83 @@ button{
 	30%{r: 27;}
 	100%{r: 17;}
 }
-@media (max-width: 479px){
+@media (min-width: 450px)and(max-width: 479px){
 	section{
 		float: left;
 		margin:0px 20px;
 		width: auto;
 	}
+	svg{
+		width:450px;
+		height:450px;
+	}
 }
-@media (min-width: 479px){
+@media (min-width: 420px)and(max-width: 449px){
 	section{
 		float: left;
-		margin:50px 10px;
+		margin:0px 20px;
+		width: auto;
+	}
+	svg{
+		width:420px;
+		height:420px;
+	}
+}
+@media (min-width: 390px)and(max-width: 419px){
+	section{
+		float: left;
+		margin:0px 20px;
+		width: auto;
+	}
+	svg{
+		width:390px;
+		height:390px;
+	}
+}
+@media (max-width: 389px){
+	section{
+		float: left;
+		margin:50px 20px;
+		width: auto;
+	}
+}
+@media (min-width: 479px)and(max-width: 509px){
+	section{
+		float: left;
+		margin:50px 20px;
+		width: auto;
+	}
+	svg{
+		width:479px;
+		height:479px;
+	}
+}
+@media (min-width: 510px)and(max-width: 539px){
+	section{
+		float: left;
+		margin:50px 20px;
+		width: auto;
+	}
+	svg{
+		width:510px;
+		height:510px;
+	}
+}
+@media (min-width: 540px)and(max-width: 589px){
+	section{
+		float: left;
+		margin:50px 20px;
+		width: auto;
+	}
+	svg{
+		width:540px;
+		height:540px;
+	}
+}
+@media (min-width: 590px){
+	section{
+		float: left;
+		margin:50px 20px;
 		width: auto;
 	}
 }
