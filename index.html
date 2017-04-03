@@ -269,7 +269,7 @@ myGame.prototype.touchending = function() {
             if (gameRest < 10) {
                 this.score += (10 - gameRest) * 1000;
                 $('p:eq(1)').html('当前分数:' + this.score + '分');
-                str2 = '+'+(10 - gameRest) * 200+',';
+                str2 = '+'+(10 - gameRest) * 1000+',';
             }
             if (localStorage.mosthigh) {
                 if (localStorage.mosthigh >= this.score) {
@@ -291,16 +291,17 @@ myGame.prototype.calcu = function(length) {
     var num;
     switch (length) {
         case length >= 10:
-            num = Math.pow(length, 2) * 4 + length * 3 + 30;
+            num = Math.pow(length, 2) * 3 + length * 3 + 10;
             break;
         case length >= 5:
-            num = Math.pow(length, 2) * 3 + length * 3 + 30;
+            num = Math.pow(length, 2) * 2.5 + length * 3 + 10;
             break;
         default:
-            num = Math.pow(length, 2) * 2 + length * 3 + 30;
+            num = Math.pow(length, 2) * 2 + length * 3 + 10;
             break;
     }
-    this.score += num*length;
+    num*=length;
+    this.score += num;
     $('p:eq(1)').html('当前分数:' + this.score + '分');
     if (num >= 400) {
         return '+' + num + '!!!'
