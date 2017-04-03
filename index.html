@@ -34,6 +34,7 @@ myGame.prototype.check = function() {
         if (winWidth < winHeight) { //屏幕宽高来设置SVG的宽高以及方向
             this.numbers = winWidth;
             $(".svg").height(winWidth);
+            $(".svg").width(winWidth);
             console.log('winWidth')
         } else {
             this.numbers = winHeight;
