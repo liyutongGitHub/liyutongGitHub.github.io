@@ -117,7 +117,6 @@ myGame.prototype.removeEvents = function() {
     this.obj = [];
     this.alldisplay = [];
     $('button').off('touchstart');
-    $('.svg').off('touchstart');
 }
 myGame.prototype.bindEvens = function() {
     var _this = this;
@@ -287,6 +286,7 @@ myGame.prototype.touchending = function() {
                 this.createText(str2 + '游戏结束,新纪录！', 5000);
             }
              $('.svg').off("touchstart");
+            $('p:eq(1)').html('当前分数:' + this.score + '分');
         }
     
 }
