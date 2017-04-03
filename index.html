@@ -51,18 +51,26 @@ myGame.prototype.creatP = function() {
 myGame.prototype.panintP = function() {
     var $div = $(`
         <div style="width:100%;" id="mydiv">
-            <svg  style="width:100%;" class="svg" viewBox="0 0 0 0" />
-            <p>最高分数:${localStorage.mosthigh}分</p>
-            <p>当前分数:${this.score}分</p>
-            <button>重新开始</button>
+            <svg class="svg" viewBox="0 0 0 0" />
+            <section>
+                <strong id="addScore">新游戏</strong>
+                <p>最高分数:${localStorage.mosthigh}分</p>
+                <p>当前分数:${this.score}分</p>
+                <button>重新开始</button>
+            </section>
         </div>
         `);
     $('body').append($div);
-    var winWidth = $("html").width();
-    this.numbers = winWidth;
-    $(".svg").height(winWidth);
-    var winHeight = $("html").height();
-    document.getElementsByClassName('svg')[0].setAttribute('viewBox', `0 0 ${winWidth} ${winWidth}`);
+    var winWidth = $(window).width();
+    var winHeight = $(window).height();
+    if(winWidth<winHeight){
+        this.numbers = winWidth;
+        $(".svg").height(winWidth);
+    }else{
+        this.numbers = winHeight;
+        $(".svg").width(winHeight);
+    }
+    document.getElementsByClassName('svg')[0].setAttribute('viewBox', `0 0 ${this.numbers} ${this.numbers}`);
     $('p').css('top', function(index) {
         return $('svg').height() + 40 + index * 45 + 'px'
     });
@@ -122,12 +130,7 @@ myGame.prototype.init = function() {
     this.repaintP(this.numbers);
 }
 myGame.prototype.createText = function(str, time) { //创建文字区域
-    var $p = `<strong class=${parseInt(str)}>${str}</strong>`;
-    $('#mydiv strong').remove();
-    $('#mydiv').append($p);
-    setTimeout(function() {
-        $('.' + parseInt(str)).remove();
-    }, time);
+    $('#addScore').html(str);
 }
 myGame.prototype.restart = function() {
     this.creatP();
@@ -290,18 +293,18 @@ myGame.prototype.touchending = function() {
         if (gameRest < 10) {
             this.score += (10 - gameRest) * 500;
             $('p:eq(1)').html('当前分数:' + this.score + '分');
-            str2 = '+' + (10 - gameRest) * 200 + ',';
+            str2 = '+' + (10 - gameRest) * 500 + ',';
         }
         if (localStorage.mosthigh) {
             if (localStorage.mosthigh >= this.score) {
-                this.createText(str2 + '真可惜,差一点就破纪录了', 5000);
+                this.createText(str2 + '真可惜,差点破纪录了', 15000);
             } else {
                 localStorage.mosthigh = this.score;
-                this.createText(str2 + '游戏结束,新纪录！', 5000);
+                this.createText(str2 + '游戏结束,新纪录！', 15000);
             }
         } else {
             localStorage.mosthigh = this.score;
-            this.createText(str2 + '游戏结束,新纪录！', 5000);
+            this.createText(str2 + '游戏结束,新纪录！', 15000);
         }
         $('.svg').off("touchstart");
         $('p:eq(1)').html('当前分数:' + this.score + '分');
