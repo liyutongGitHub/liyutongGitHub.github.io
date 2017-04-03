@@ -47,7 +47,7 @@ myGame.prototype.panintP = function() {
     var $div = $(`
         <div style="width:100%;" id="mydiv">
             <svg  style="width:100%;" class="svg" viewBox="0 0 0 0" />
-            <p>最高分:${localStorage.mosthigh}分</p>
+            <p>最高分数:${localStorage.mosthigh||0}分</p>
             <p>当前分数:${this.score}分</p>
             <button>重新开始</button>
         </div>
@@ -105,6 +105,8 @@ myGame.prototype.restart = function() {
     this.dismiss = 0; //已经空了的列数
     this.score = 0; //本局分数
     this.createText('重新开始！',1000);
+    $('p:eq(0)').html('最高分数:' + localStorage.mosthigh + '分');
+    
     $('p:eq(1)').html('当前分数:' + this.score + '分');
 }
 myGame.prototype.reset = function() {
