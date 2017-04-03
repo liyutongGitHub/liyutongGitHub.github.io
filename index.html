@@ -27,7 +27,7 @@ myGame.prototype.creatP = function() {
             this._p[i][j] = {
                 color: randomNum(Math.floor(Math.random() * 5)),
                 move: false,
-                moveX: 0,
+                moveX: 0,               //该方块移动了几格
                 moveY: 0
             };
         }
@@ -63,7 +63,7 @@ myGame.prototype.panintP = function() {
     $('body').append($div);
     var winWidth = $(window).width();
     var winHeight = $(window).height();
-    if(winWidth<winHeight){
+    if(winWidth<winHeight){                 //屏幕宽高来设置SVG的宽高以及方向
         this.numbers = winWidth;
         $(".svg").height(winWidth);
     }else{
@@ -71,9 +71,6 @@ myGame.prototype.panintP = function() {
         $(".svg").width(winHeight);
     }
     document.getElementsByClassName('svg')[0].setAttribute('viewBox', `0 0 ${this.numbers} ${this.numbers}`);
-    $('p').css('top', function(index) {
-        return $('svg').height() + 40 + index * 45 + 'px'
-    });
 }
 myGame.prototype.repaintP = function(winWidth) {
         var str = '';
@@ -81,18 +78,18 @@ myGame.prototype.repaintP = function(winWidth) {
         for (var flag = 0, i = 20; flag < 10; flag++) {
             for (var num = 0, j = 20; num < 10; num++) {
                 if (this._p[num][flag].color) {
-                    if (this._p[num][flag].move) {
+                    if (this._p[num][flag].move) {//当单元格需要move时，先绘制在起点，再加动画timeout(num, flag);
                         var backx = (num - parseInt(this._p[num][flag].moveX)) * this.numbers / 11 + 20; //移动起点
                         var backy = (flag + parseInt(this._p[num][flag].moveY)) * this.numbers / 11 + 20;
                         str = str.concat(`<rect width="${winWidth / 11}" height="${winWidth / 11}" class='R${num+''+flag}'
                              style="fill:${this._p[num][flag].color};"
                                 x="${backy}" y="${backx}"/>`);
                         timeout(num, flag);
-                    } else {
+                    } else {//普通绘制单元格
                         str = str.concat(`<rect width="${winWidth / 11}" height="${winWidth / 11}" class='R${num+''+flag}'
                              style="fill:${this._p[num][flag].color}" x="${i}" y="${j}" />`);
                     }
-                } else {
+                } else {//已经消除的单元格this._p[num][flag].color==0
                     str = str.concat(`<rect width="${winWidth / 11}" height="${winWidth / 11}" class='R${num+''+flag}'
                              style="fill:${this._p[num][flag].color};display:none"
                                 x="${i}" y="${j}"/>`);
@@ -110,7 +107,7 @@ myGame.prototype.repaintP = function(winWidth) {
         $(".svg").html(str);
         $('.svg rect').attr('stroke-width', '1').attr('rx', '4').attr('ry', '4').attr('stroke', 'black');
     }
-myGame.prototype.toPosition = function(nowAdays, x, y) {
+myGame.prototype.toPosition = function(nowAdays, x, y) {//给单元格加动画
     this._p[x][y].move = false;
     this._p[x][y].moveX = 0;
     this._p[x][y].moveY = 0;
@@ -124,15 +121,15 @@ myGame.prototype.toPosition = function(nowAdays, x, y) {
     }, 400);
 }
 myGame.prototype.init = function() {
-    this.creatP();
-    this.panintP();
-    this.bindEvens();
-    this.repaintP(this.numbers);
+    this.creatP();              //随机出一个P矩阵
+    this.panintP();             
+    this.bindEvens();           //绑定事件
+    this.repaintP(this.numbers);//绘制出一个P矩阵
 }
 myGame.prototype.createText = function(str, time) { //创建文字区域
     $('#addScore').html(str);
 }
-myGame.prototype.restart = function() {
+myGame.prototype.restart = function() {         //点击重新开始按钮
     this.creatP();
     this.repaintP(this.numbers);
     this.reset();
@@ -184,7 +181,6 @@ myGame.prototype.display = function(str, i, j) { //点击的对象递归四周
                 this._p[i][j].color = 0;
                 this._p[i][j].move = true;
                 this._p[i][j].lastcolor = str;
-                // $('.svg rect').eq(j*10+i).css('display','none');
                 this.obj.push({
                     i: i,
                     j: j,
@@ -236,7 +232,7 @@ myGame.prototype.handleP = function() { //处理矩阵，把空方块往右上�
         this._p[this.obj[0].i][this.obj[0].j].move = false;
         this.obj = [];
     } else {
-        this.obj.sort(function(a, b) {
+        this.obj.sort(function(a, b) {          
             return a.i - b.i;
         });
         for (var n = 0; n < this.obj.length; n++) {
