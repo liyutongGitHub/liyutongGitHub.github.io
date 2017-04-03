@@ -32,18 +32,17 @@ myGame.prototype.creatP = function() {
     function randomNum(num) {
         switch (num) {
             case 0:
-                return 'red';
+                return '#F33F3F';
             case 1:
-                return 'blue';
+                return '#156FE5';
             case 2:
-                return 'green';
+                return '#0BEA21';
             case 3:
-                return 'yellow';
+                return '#EED511';
             case 4:
-                return 'purple';
+                return '#D747D2';
         }
     }
-    this.panintP();
 }
 myGame.prototype.panintP = function() {
     var $div = $(`
@@ -51,6 +50,7 @@ myGame.prototype.panintP = function() {
             <svg  style="width:100%;" class="svg" viewBox="0 0 0 0" />
             <p>最高分:${localStorage.mosthigh}分</p>
             <p>当前分数:${this.score}分</p>
+            <button>重新开始</button>
         </div>
         `);
     $('body').append($div);
@@ -58,8 +58,6 @@ myGame.prototype.panintP = function() {
     this.numbers = winWidth;
     $(".svg").height(winWidth);
     var winHeight = $("html").height();
-    this.repaintP(winWidth);
-    this.bindEvens();
     this.settings(winWidth);
 }
 myGame.prototype.repaintP = function(winWidth) {
@@ -84,11 +82,13 @@ myGame.prototype.repaintP = function(winWidth) {
 }
 myGame.prototype.settings = function(winWidth) { //界面元素的一些设置
     document.getElementsByClassName('svg')[0].setAttribute('viewBox', `0 0 ${winWidth} ${winWidth}`);
-    $('p:eq(1)').css('top', $('svg').height() + 35 + 'px');
-    $('p:eq(0)').css('top', $('svg').height() + 80 + 'px');
+    $('p').css('top', function(index){return $('svg').height()+40+index*45 + 'px'});
 }
 myGame.prototype.init = function() {
     this.creatP();
+    this.panintP();
+    this.bindEvens();
+    this.repaintP(this.numbers);
 }
 myGame.prototype.createText = function(str, time) { //创建文字区域
     var $p = `<strong class=${parseInt(str)}>${str}</strong>`;
@@ -98,12 +98,35 @@ myGame.prototype.createText = function(str, time) { //创建文字区域
         $('.' + parseInt(str)).remove();
     }, time);
 }
+myGame.prototype.restart = function() {
+    this.creatP();
+    this.repaintP(this.numbers);
+    this.reset();
+    this.removeEvents();
+    this.bindEvens();
+    this.dismiss = 0; //已经空了的列数
+    this.score = 0; //本局分数
+    this.createText('重新开始！',1000);
+    $('p:eq(1)').html('当前分数:' + this.score + '分');
+}
 myGame.prototype.reset = function() {
     this.obj = [];
     this.alldisplay = [];
 }
+myGame.prototype.removeEvents = function() {
+    this.obj = [];
+    this.alldisplay = [];
+    $('button').off('touchstart');
+    $('.svg').off('touchstart');
+}
 myGame.prototype.bindEvens = function() {
     var _this = this;
+    $('button').on('touchstart',function(){
+        _this.restart();
+        $('button').css('background-color','#7FD7FC');
+        setTimeout(function(){
+        $('button').css('background-color','white');},200);
+    })
     $('.svg').on('touchstart', function(event) {
         _this.reset();
         var e = e || event;
