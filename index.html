@@ -19,7 +19,7 @@ window.myGame = function() {
     this.alldisplay = []; //储存空列的列号
     this.dismiss = 0; //已经空了的列数
     this.score = 0; //本局分数
-    this.edition = '1.0.1';//版本号
+    this.edition = '1.0.2'; //版本号
 }
 myGame.prototype.init = function() {
     this.creatP(); //随机出一个P矩阵
@@ -28,15 +28,30 @@ myGame.prototype.init = function() {
     this.bindEvens(); //绑定事件
     this.setting();
     this.checkEdition();
+    setTimeout(function() {
+        $('#logoing').css('display', 'none');
+    }, 1500)
 }
-myGame.prototype.checkEdition=function(){
-    if(localStorage.edition==this.edition){}
-        else{
-            localStorage.edition=this.edition;
-            this.createText('版本更新，分数清零');
-            $('p:eq(0)').html('最高分数:' + 0 + '分');
-            localStorage.mosthigh=0;
-        }
+myGame.prototype.logoing = function() {
+    var _this = this;
+    var str = `<iframe id="logoing" src="iframes/logo.html" scrolling="no" style="width:100%;"></iframe>`
+    $('body').append(str);
+    $('#logoing').css('position', 'fixed').height($(window).height());
+    // $('#logoing svg').attr('height',$(window).height());
+    setTimeout(function() {
+        $('#logoing').animate({
+            opacity: .0
+        }, 1500);
+        _this.init();
+    }, 3000)
+}
+myGame.prototype.checkEdition = function() {
+    if (localStorage.edition == this.edition) {} else {
+        localStorage.edition = this.edition;
+        this.createText('版本更新，分数清零');
+        $('p:eq(0)').html('最高分数:' + 0 + '分');
+        localStorage.mosthigh = 0;
+    }
 }
 myGame.prototype.setting = function() {
     setInterval(function() {
@@ -49,10 +64,10 @@ myGame.prototype.setting = function() {
         } else {
             this.numbers = winHeight;
             $(".svg").width(winHeight);
-            $(".svg").height(winHeight-20);
+            $(".svg").height(winHeight - 20);
             console.log('winHeight')
         }
-    },2000)
+    }, 2000)
 
 
 }
@@ -340,28 +355,18 @@ myGame.prototype.touchending = function() {
 myGame.prototype.calcu = function(length) {
     var num;
     switch (length) {
-        case length >= 20:
-            num = 113;
+        case length >= 10:
+            num = Math.pow(length, 2) * 3 + length * 3 + 30;
             break;
-        case length >= 16:
-            num = 101;
-            break;
-        case length >= 12:
-            num = 89;
-            break;
-        case length >= 8:
-            num = 78;
-            break;
-        case length >= 4:
-            num = 67;
+        case length >= 5:
+            num = Math.pow(length, 2) * 2.5 + length * 3 + 30;
             break;
         default:
-            num = 43;
+            num = Math.pow(length, 2) * 2 + length * 3 + 30;
             break;
     }
     num *= length;
     this.score += num;
-            console.log(num);
     $('p:eq(1)').html('当前分数:' + this.score + '分');
     if (num >= 300) {
         return '+' + num + '!!!';
@@ -370,7 +375,7 @@ myGame.prototype.calcu = function(length) {
     }
 }
 var myGame1 = new myGame();
-myGame1.init();
+myGame1.logoing();
 </script>
 
 </html>
