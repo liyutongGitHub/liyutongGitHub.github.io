@@ -19,27 +19,37 @@ window.myGame = function() {
     this.alldisplay = []; //储存空列的列号
     this.dismiss = 0; //已经空了的列数
     this.score = 0; //本局分数
+    this.edition = '1.0.1';//版本号
 }
 myGame.prototype.init = function() {
     this.creatP(); //随机出一个P矩阵
     this.panintP();
     this.repaintP(this.numbers); //绘制出一个P矩阵
     this.bindEvens(); //绑定事件
-    this.check();
+    this.setting();
+    this.checkEdition();
 }
-myGame.prototype.check = function() {
+myGame.prototype.checkEdition=function(){
+    if(localStorage.edition==this.edition){}
+        else{
+            localStorage.edition=this.edition;
+            this.createText('版本更新，分数清零');
+            $('p:eq(0)').html('最高分数:' + 0 + '分');
+            localStorage.mosthigh=0;
+        }
+}
+myGame.prototype.setting = function() {
     setInterval(function() {
         var winWidth = $(window).width();
         var winHeight = $(window).height();
         if (winWidth < winHeight) { //屏幕宽高来设置SVG的宽高以及方向
             this.numbers = winWidth;
             $(".svg").height(winWidth);
-            $(".svg").width(winWidth);
             console.log('winWidth')
         } else {
             this.numbers = winHeight;
             $(".svg").width(winHeight);
-            $(".svg").height(winHeight);
+            $(".svg").height(winHeight-20);
             console.log('winHeight')
         }
     },2000)
@@ -307,13 +317,13 @@ myGame.prototype.touchending = function() {
         var str = '';
         var str2 = '';
         if (gameRest < 10) {
-            this.score += (10 - gameRest) * 500;
+            this.score += (10 - gameRest) * 300;
             $('p:eq(1)').html('当前分数:' + this.score + '分');
-            str2 = '+' + (10 - gameRest) * 500 + ',';
+            str2 = '+' + (10 - gameRest) * 300 + ',';
         }
         if (localStorage.mosthigh) {
             if (localStorage.mosthigh >= this.score) {
-                this.createText(str2 + '真可惜,差点破纪录了', 15000);
+                this.createText(str2 + '真可惜,差点就破纪录了', 15000);
             } else {
                 localStorage.mosthigh = this.score;
                 this.createText(str2 + '游戏结束,新纪录！', 15000);
@@ -330,21 +340,31 @@ myGame.prototype.touchending = function() {
 myGame.prototype.calcu = function(length) {
     var num;
     switch (length) {
-        case length >= 10:
-            num = Math.pow(length, 2) * 4 + length * 3 + 30;
+        case length >= 20:
+            num = 113;
             break;
-        case length >= 5:
-            num = Math.pow(length, 2) * 3 + length * 3 + 30;
+        case length >= 16:
+            num = 101;
+            break;
+        case length >= 12:
+            num = 89;
+            break;
+        case length >= 8:
+            num = 78;
+            break;
+        case length >= 4:
+            num = 67;
             break;
         default:
-            num = Math.pow(length, 2) * 2 + length * 3 + 30;
+            num = 43;
             break;
     }
     num *= length;
     this.score += num;
+            console.log(num);
     $('p:eq(1)').html('当前分数:' + this.score + '分');
-    if (num >= 400) {
-        return '+' + num + '!!!'
+    if (num >= 300) {
+        return '+' + num + '!!!';
     } else {
         return '+' + num;
     }
