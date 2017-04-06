@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
     <link rel="stylesheet" href="css/reset.css">
+    <link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="bookmark" href="/favicon.ico"/>
 </head>
 
 <body>
@@ -60,12 +62,10 @@ myGame.prototype.setting = function() {
         if (winWidth < winHeight) { //屏幕宽高来设置SVG的宽高以及方向
             this.numbers = winWidth;
             $(".svg").height(winWidth);
-            console.log('winWidth')
         } else {
             this.numbers = winHeight;
             $(".svg").width(winHeight);
             $(".svg").height(winHeight - 20);
-            console.log('winHeight')
         }
     }, 2000)
 
