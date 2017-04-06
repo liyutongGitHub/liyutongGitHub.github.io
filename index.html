@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
     <link rel="stylesheet" href="css/reset.css">
-    <link rel="shortcut icon" href="/favicon.ico"/>
-<link rel="bookmark" href="/favicon.ico"/>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="bookmark" href="favicon.ico" />
 </head>
 
 <body>
@@ -22,6 +22,14 @@ window.myGame = function() {
     this.dismiss = 0; //已经空了的列数
     this.score = 0; //本局分数
     this.edition = '1.0.2'; //版本号
+}
+myGame.prototype.isWeiXin = function() {
+    var ua = window.navigator.userAgent.toLowerCase();
+    if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+        return true;
+    } else {
+        return false;
+    }
 }
 myGame.prototype.init = function() {
     this.creatP(); //随机出一个P矩阵
@@ -338,7 +346,7 @@ myGame.prototype.touchending = function() {
         }
         if (localStorage.mosthigh) {
             if (localStorage.mosthigh >= this.score) {
-                this.createText(str2 + '真可惜,差点就破纪录了', 15000);
+                this.createText(str2 + '真可惜,差点破纪录了', 15000);
             } else {
                 localStorage.mosthigh = this.score;
                 this.createText(str2 + '游戏结束,新纪录！', 15000);
@@ -375,7 +383,12 @@ myGame.prototype.calcu = function(length) {
     }
 }
 var myGame1 = new myGame();
-myGame1.logoing();
+if (myGame1.isWeiXin()) {
+    var str = '<p style="position:absolute;top:50%;left:50%">请使用浏览器打开<p>';
+    $('body').append(str);
+} else {
+    myGame1.logoing();
+}
 </script>
 
 </html>
